@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>ResumeIQ AI - Career Platform</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(168, 85, 247, 0.16), transparent 24%),
+        radial-gradient(circle at bottom center, rgba(16, 185, 129, 0.12), transparent 32%),
+        #050816;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+      opacity: 0.18;
+    }
+    ::-webkit-scrollbar { width: 12px; height: 12px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.35); border-radius: 999px; border: 3px solid rgba(15, 23, 42, 0.9); }
+    .glass {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.62));
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: 0 18px 60px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255,255,255,0.04);
+      backdrop-filter: blur(24px);
+    }
+    .browser-frame {
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: rgba(2, 6, 23, 0.62);
+      box-shadow: 0 24px 80px rgba(2, 6, 23, 0.42);
+      overflow: hidden;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 52px;
+      padding: 0 18px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(15, 23, 42, 0.7);
+    }
+    .browser-dots { display: flex; gap: 8px; }
+    .browser-dot { width: 10px; height: 10px; border-radius: 999px; }
+    .browser-url {
+      flex: 1;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(15, 23, 42, 0.55);
+      color: rgba(226, 232, 240, 0.7);
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    .preview-section { scroll-margin-top: 108px; }
+    .section-label {
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(125, 211, 252, 0.8);
+      font-size: 11px;
+    }
+    .soft-grid {
+      background-image: linear-gradient(rgba(148,163,184,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .ring-track { stroke: rgba(148, 163, 184, 0.16); }
+    .ring-progress {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+      transition: stroke-dashoffset 900ms ease;
+    }
+    .mini-chip {
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: rgba(15, 23, 42, 0.45);
+    }
+    .tab-btn[aria-selected="true"] {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.18));
+      border-color: rgba(125, 211, 252, 0.45);
+      color: white;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.12);
+    }
+    .device-frame {
+      position: relative;
+      border-radius: 2rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.95));
+      box-shadow: 0 24px 90px rgba(2, 6, 23, 0.52);
+      overflow: hidden;
+    }
+    .device-notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      z-index: 10;
+    }
+    .fade-in { animation: fadeIn 700ms ease both; }
+    .float-up { animation: floatUp 1000ms ease both; }
+    .float-slow { animation: floatUp 7s ease-in-out infinite alternate; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes floatUp { from { transform: translateY(6px); } to { transform: translateY(-6px); } }
+  </style>
+</head>
+<body class="text-slate-100 antialiased selection:bg-cyan-300/30 selection:text-white">
+  <div class="relative min-h-screen">
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
+      <div class="mx-auto flex h-20 max-w-[1660px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-4">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 shadow-[0_0_50px_rgba(34,211,238,0.18)]">
+            <span class="text-lg font-semibold text-cyan-200">RI</span>
+          </div>
+          <div>
+            <p class="section-label">ResumeIQ AI</p>
+            <h1 class="text-lg font-semibold tracking-tight sm:text-xl">Analyze - Optimize - Get Hired</h1>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="hidden items-center gap-2 xl:flex">
+            <button data-jump="landing" class="jump-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10">Landing</button>
+            <button data-jump="auth" class="jump-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10">Auth</button>
+            <button data-jump="dashboard" class="jump-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10">Dashboard</button>
+            <button data-jump="settings" class="jump-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10">Settings</button>
+          </div>
+          <button id="header-signin-btn" onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Welcome back — sign in below', 'info');" style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.15),rgba(168,85,247,0.15));border:1px solid rgba(34,211,238,0.35);color:#e2e8f0;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;backdrop-filter:blur(8px);" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)';this.style.color='#fff';" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.15),rgba(168,85,247,0.15))';this.style.borderColor='rgba(34,211,238,0.35)';this.style.color='#e2e8f0';">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            Sign In
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto grid max-w-[1660px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[300px_minmax(0,1fr)] lg:px-8">
+      <aside class="hidden lg:block">
+        <div class="sticky top-24 glass rounded-[1.75rem] p-4">
+          <div class="mb-4">
+            <p class="section-label">Preview Index</p>
+            <h2 class="mt-2 text-2xl font-semibold tracking-tight">Application Screens</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-300">A complete visual walkthrough of the ResumeIQ AI product before implementation begins.</p>
+          </div>
+          <nav class="space-y-2 text-sm">
+            <button data-jump="landing" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-left text-cyan-100 transition hover:bg-cyan-400/14">
+              <span>Landing Page</span><span class="text-cyan-200/70">01</span>
+            </button>
+            <button data-jump="auth" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Authentication</span><span class="text-slate-400">02</span></button>
+            <button data-jump="dashboard" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Dashboard</span><span class="text-slate-400">03</span></button>
+            <button data-jump="upload" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Resume Upload</span><span class="text-slate-400">04</span></button>
+            <button data-jump="ats" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>ATS Analysis</span><span class="text-slate-400">05</span></button>
+            <button data-jump="jobs" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Job Match</span><span class="text-slate-400">06</span></button>
+            <button data-jump="tracker" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Internship Tracker</span><span class="text-slate-400">07</span></button>
+            <button data-jump="interview" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Interview Prep</span><span class="text-slate-400">08</span></button>
+            <button data-jump="profile" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Profile</span><span class="text-slate-400">09</span></button>
+            <button data-jump="settings" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Settings</span><span class="text-slate-400">10</span></button>
+            <button data-jump="mobile" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Mobile Preview</span><span class="text-slate-400">11</span></button>
+            <button data-jump="tablet" class="jump-btn flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10"><span>Tablet Preview</span><span class="text-slate-400">12</span></button>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="space-y-8">
+        <section id="landing" class="preview-section">
+          <div class="mb-4 flex items-end justify-between gap-4">
+            <div>
+              <p class="section-label">01 / Landing Page</p>
+              <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A recruiter-friendly SaaS landing page with a polished first impression.</h2>
+            </div>
+            <div class="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-slate-300 md:block">Full-bleed hero, feature story, social proof, pricing, and FAQ</div>
+          </div>
+
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar">
+              <div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div>
+              <div class="browser-url">resumeiq.ai</div>
+              <div class="hidden text-xs text-slate-400 lg:block">Desktop Web</div>
+            </div>
+
+            <div class="relative overflow-hidden bg-slate-950">
+              <div class="absolute inset-0 soft-grid opacity-30"></div>
+              <div class="absolute -left-32 top-8 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl"></div>
+              <div class="absolute right-0 top-40 h-96 w-96 rounded-full bg-violet-500/15 blur-3xl"></div>
+
+              <div class="relative px-5 pb-10 pt-4 sm:px-8 lg:px-10">
+                <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-full border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-md">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-400/10 text-sm font-semibold text-cyan-200">RI</div>
+                    <div>
+                      <p class="text-sm font-semibold">ResumeIQ AI</p>
+                      <p class="text-xs text-slate-400">Analyze - Optimize - Get Hired</p>
+                    </div>
+                  </div>
+                  <div class="hidden items-center gap-6 text-sm text-slate-300 lg:flex">
+                    <a href="#features" class="transition hover:text-white">Features</a>
+                    <a href="#pricing" class="transition hover:text-white">Pricing</a>
+                    <a href="#faq" class="transition hover:text-white">FAQ</a>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-cyan-400/30 hover:bg-cyan-400/10">Sign In</button>
+                    <button class="rounded-full bg-cyan-400 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-300">Get Started</button>
+                  </div>
+                </nav>
+
+                <div class="mx-auto grid max-w-7xl items-center gap-10 py-14 lg:grid-cols-[0.95fr_1.05fr] lg:py-20">
+                  <div class="fade-in">
+                    <p class="section-label">Built for students, graduates, and internship hunters</p>
+                    <h3 class="mt-4 max-w-xl text-5xl font-semibold tracking-tight text-white sm:text-6xl">
+                      ResumeIQ AI turns every application into a better match.
+                    </h3>
+                    <p class="mt-5 max-w-lg text-lg leading-8 text-slate-300">
+                      Upload a resume, compare it against real jobs, get ATS guidance, track applications, and prepare for interviews with a single recruiter-friendly workflow.
+                    </p>
+                    <div class="mt-8 flex flex-wrap items-center gap-3">
+                      <button class="rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300">Start free trial</button>
+                      <button class="rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-cyan-400/30 hover:bg-cyan-400/10">View ATS demo</button>
+                    </div>
+                    <div class="mt-10 flex flex-wrap gap-6 text-sm text-slate-300">
+                      <div><span class="block text-2xl font-semibold text-white">4.8/5</span> recruiter score</div>
+                      <div><span class="block text-2xl font-semibold text-white">18k+</span> resumes optimized</div>
+                      <div><span class="block text-2xl font-semibold text-white">61%</span> average match lift</div>
+                    </div>
+                  </div>
+
+                  <div class="relative float-slow">
+                    <div class="rounded-[2rem] border border-white/10 bg-slate-950/80 p-4 shadow-[0_30px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+                      <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                        <div class="flex items-start justify-between gap-4">
+                          <div>
+                            <p class="text-sm text-slate-400">Live application health</p>
+                            <h4 class="mt-1 text-xl font-semibold">Resume snapshot</h4>
+                          </div>
+                          <div class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">ATS Ready</div>
+                        </div>
+                        <div class="mt-5 grid gap-4 sm:grid-cols-[160px_1fr]">
+                          <div class="rounded-[1.25rem] border border-white/10 bg-slate-950/70 p-4 text-center">
+                            <svg viewBox="0 0 120 120" class="mx-auto h-32 w-32">
+                              <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="12"></circle>
+                              <circle cx="60" cy="60" r="48" fill="none" stroke="url(#landingRing)" stroke-width="12" stroke-linecap="round" stroke-dasharray="301" stroke-dashoffset="54" class="ring-progress"></circle>
+                              <defs>
+                                <linearGradient id="landingRing" x1="0" y1="0" x2="1" y2="1">
+                                  <stop offset="0%" stop-color="#22d3ee" />
+                                  <stop offset="100%" stop-color="#8b5cf6" />
+                                </linearGradient>
+                              </defs>
+                              <text x="60" y="58" text-anchor="middle" class="fill-white text-[24px] font-semibold">88</text>
+                              <text x="60" y="79" text-anchor="middle" class="fill-slate-400 text-[11px] tracking-[0.2em]">SCORE</text>
+                            </svg>
+                            <p class="mt-2 text-xs text-slate-400">82 of 94 criteria aligned</p>
+                          </div>
+                          <div class="space-y-3">
+                            <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                              <div class="flex items-center justify-between text-sm"><span>Keyword match</span><span class="text-cyan-200">91%</span></div>
+                              <div class="mt-3 h-2 overflow-hidden rounded-full bg-white/5"><div class="h-full w-[91%] rounded-full bg-gradient-to-r from-cyan-400 to-violet-500"></div></div>
+                            </div>
+                            <div class="grid gap-3 sm:grid-cols-2">
+                              <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.26em] text-slate-400">Top skill</p><p class="mt-2 text-lg font-semibold">React + TypeScript</p></div>
+                              <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.26em] text-slate-400">Best role</p><p class="mt-2 text-lg font-semibold">Frontend Intern</p></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="features" class="mx-auto max-w-7xl border-t border-white/10 pt-10">
+                  <div class="grid gap-5 lg:grid-cols-3">
+                    <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                      <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-200">01</div>
+                      <h4 class="mt-4 text-xl font-semibold">ATS analysis that feels immediate</h4>
+                      <p class="mt-2 text-sm leading-6 text-slate-300">See score breakdowns, missing keywords, and improvement suggestions in a format a recruiter can understand at a glance.</p>
+                    </div>
+                    <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                      <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-400/10 text-violet-200">02</div>
+                      <h4 class="mt-4 text-xl font-semibold">Match jobs with the right signal</h4>
+                      <p class="mt-2 text-sm leading-6 text-slate-300">Rank roles by skill overlap, role fit, and application readiness so the next step is always clear.</p>
+                    </div>
+                    <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                      <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400/10 text-emerald-200">03</div>
+                      <h4 class="mt-4 text-xl font-semibold">Track every internship end to end</h4>
+                      <p class="mt-2 text-sm leading-6 text-slate-300">Manage applied, interview, selected, rejected, and wishlist states in one clean workspace.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mx-auto mt-10 grid max-w-7xl gap-6 border-t border-white/10 pt-10 lg:grid-cols-[1.05fr_0.95fr]">
+                  <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6">
+                    <div class="flex items-center justify-between gap-4">
+                      <div>
+                        <p class="text-sm text-slate-400">Growth statistics</p>
+                        <h4 class="mt-1 text-2xl font-semibold">Evidence that the product is working</h4>
+                      </div>
+                      <div class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Last 30 days</div>
+                    </div>
+                    <div class="mt-6 grid gap-4 sm:grid-cols-4">
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Resumes</p><p class="mt-2 text-3xl font-semibold">18.2k</p><p class="mt-2 text-sm text-emerald-200">+14.7%</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Job matches</p><p class="mt-2 text-3xl font-semibold">9.4k</p><p class="mt-2 text-sm text-cyan-200">+11.2%</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Interview invites</p><p class="mt-2 text-3xl font-semibold">2.1k</p><p class="mt-2 text-sm text-violet-200">+18.1%</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Offer rate</p><p class="mt-2 text-3xl font-semibold">17%</p><p class="mt-2 text-sm text-amber-200">+4.3%</p></div>
+                    </div>
+                    <div class="mt-6 rounded-[1.5rem] border border-white/10 bg-slate-950/70 p-4">
+                      <svg viewBox="0 0 680 230" class="h-56 w-full">
+                        <defs>
+                          <linearGradient id="landingChart" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="rgba(34,211,238,0.4)" />
+                            <stop offset="100%" stop-color="rgba(34,211,238,0)" />
+                          </linearGradient>
+                        </defs>
+                        <rect x="0" y="0" width="680" height="230" rx="24" fill="rgba(2,6,23,0.4)"></rect>
+                        <g stroke="rgba(148,163,184,0.08)">
+                          <line x1="24" y1="44" x2="656" y2="44" /><line x1="24" y1="86" x2="656" y2="86" /><line x1="24" y1="128" x2="656" y2="128" /><line x1="24" y1="170" x2="656" y2="170" />
+                        </g>
+                        <path d="M24 174 C80 162, 108 122, 156 136 C198 148, 228 78, 280 94 C332 110, 348 52, 410 70 C470 88, 506 42, 554 58 C598 72, 628 36, 656 46 L656 228 L24 228 Z" fill="url(#landingChart)"></path>
+                        <polyline points="24,174 80,162 156,136 228,78 280,94 348,52 410,70 506,42 554,58 628,36 656,46" fill="none" stroke="url(#landingRing)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                        <g fill="#e2e8f0" font-size="11" opacity="0.6">
+                          <text x="28" y="214">Mon</text><text x="120" y="214">Tue</text><text x="212" y="214">Wed</text><text x="304" y="214">Thu</text><text x="396" y="214">Fri</text><text x="488" y="214">Sat</text><text x="580" y="214">Sun</text>
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Testimonials</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Students and recruiters both get the signal quickly.</h4>
+                    <div class="mt-6 space-y-4">
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-sm leading-6 text-slate-300">"The ATS breakdown made my resume feel less like a guess and more like a product. I landed callbacks within a week."</p><p class="mt-3 text-sm font-medium text-white">Aarav Mehta, final-year CS</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-sm leading-6 text-slate-300">"It is clean enough for recruiters and detailed enough for applicants to actually act on."</p><p class="mt-3 text-sm font-medium text-white">Nina Patel, campus recruiter</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-sm leading-6 text-slate-300">"The tracker and interview prep together make the workflow feel complete rather than fragmented."</p><p class="mt-3 text-sm font-medium text-white">Sara Khan, design intern</p></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="pricing" class="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-10">
+                  <div class="flex items-end justify-between gap-4">
+                    <div>
+                      <p class="text-sm text-slate-400">Pricing</p>
+                      <h4 class="mt-1 text-2xl font-semibold">Simple enough for students, strong enough for teams.</h4>
+                    </div>
+                    <p class="hidden text-sm text-slate-400 md:block">Preview-only values</p>
+                  </div>
+                  <div class="mt-6 grid gap-4 lg:grid-cols-3">
+                    <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-6">
+                      <p class="text-sm text-slate-400">Starter</p>
+                      <div class="mt-2 flex items-end gap-2"><span class="text-4xl font-semibold">$0</span><span class="pb-1 text-sm text-slate-400">/ month</span></div>
+                      <p class="mt-4 text-sm leading-6 text-slate-300">Resume uploads, one ATS scan per day, and basic job matching.</p>
+                      <button class="mt-6 w-full rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-100">Start free</button>
+                    </div>
+                    <div class="rounded-[1.6rem] border border-cyan-400/30 bg-cyan-400/10 p-6 shadow-[0_0_60px_rgba(34,211,238,0.12)]">
+                      <div class="flex items-center justify-between"><p class="text-sm text-cyan-100">Pro</p><span class="rounded-full bg-cyan-300/20 px-2 py-1 text-xs text-cyan-100">Popular</span></div>
+                      <div class="mt-2 flex items-end gap-2"><span class="text-4xl font-semibold">$12</span><span class="pb-1 text-sm text-cyan-100/70">/ month</span></div>
+                      <p class="mt-4 text-sm leading-6 text-cyan-50/80">Unlimited analyses, AI recommendations, interview prep, and internship tracker.</p>
+                      <button class="mt-6 w-full rounded-full bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950">Upgrade now</button>
+                    </div>
+                    <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-6">
+                      <p class="text-sm text-slate-400">Teams</p>
+                      <div class="mt-2 flex items-end gap-2"><span class="text-4xl font-semibold">Custom</span></div>
+                      <p class="mt-4 text-sm leading-6 text-slate-300">Hiring teams, campus placement groups, analytics, and shared pipelines.</p>
+                      <button class="mt-6 w-full rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-100">Contact sales</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="faq" class="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-10">
+                  <p class="text-sm text-slate-400">FAQ</p>
+                  <h4 class="mt-1 text-2xl font-semibold">Questions that typically come up before launch.</h4>
+                  <div class="mt-6 grid gap-4 lg:grid-cols-2">
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><h5 class="font-semibold">How does the ATS score work?</h5><p class="mt-2 text-sm leading-6 text-slate-300">It compares your resume structure, keywords, and role alignment against an example job requirement profile and returns a readable match score.</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><h5 class="font-semibold">Can I track multiple internships?</h5><p class="mt-2 text-sm leading-6 text-slate-300">Yes. The tracker is designed as a pipeline with applied, interview, selected, rejected, and wishlist states.</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><h5 class="font-semibold">Is there interview prep built in?</h5><p class="mt-2 text-sm leading-6 text-slate-300">The preview shows mock interview scoring, question banks, and AI feedback summaries in one place.</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><h5 class="font-semibold">Does it support mobile usage?</h5><p class="mt-2 text-sm leading-6 text-slate-300">Yes. Mobile and tablet previews are included below to validate the responsive layout before build-out.</p></div>
+                  </div>
+                </div>
+
+                <footer class="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-8 pb-2 text-sm text-slate-400">
+                  <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <p>ResumeIQ AI - Analyze - Optimize - Get Hired</p>
+                    <div class="flex flex-wrap gap-4">
+                      <span>Privacy</span><span>Terms</span><span>Support</span>
+                    </div>
+                  </div>
+                </footer>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="auth" class="preview-section">
+          <div class="mb-4 flex items-end justify-between gap-4">
+            <div>
+              <p class="section-label">02 / Authentication</p>
+              <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A polished login experience with every requested auth state previewed.</h2>
+            </div>
+          </div>
+
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar">
+              <div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div>
+              <div class="browser-url">resumeiq.ai / auth</div>
+            </div>
+            <div class="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
+              <div class="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.22),transparent_42%),linear-gradient(180deg,rgba(15,23,42,0.9),rgba(2,6,23,0.95))] p-8 lg:border-b-0 lg:border-r">
+                <div class="absolute -right-14 top-8 h-44 w-44 rounded-full bg-violet-500/20 blur-3xl"></div>
+                <p class="section-label">Security-first onboarding</p>
+                <h3 class="mt-4 max-w-md text-4xl font-semibold tracking-tight">Join with email, phone, or social providers without breaking the visual system.</h3>
+                <p class="mt-4 max-w-md text-sm leading-7 text-slate-300">The preview covers sign in, sign up, email OTP, phone OTP, Google login, GitHub login, forgot password, and profile creation in one coherent flow.</p>
+                <div class="mt-8 space-y-3 text-sm text-slate-300">
+                  <div class="flex items-center gap-3"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-400/10 text-emerald-200">1</span> OAuth and OTP options shown together</div>
+                  <div class="flex items-center gap-3"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-400/10 text-cyan-200">2</span> Profile creation handoff after verification</div>
+                  <div class="flex items-center gap-3"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-violet-400/10 text-violet-200">3</span> Clean mobile-friendly form rhythm</div>
+                </div>
+
+              </div>
+
+              <div class="p-5 sm:p-6 lg:p-8">
+                <div class="flex flex-wrap gap-2" data-tab-group="auth">
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="sign-in" aria-selected="true">Sign In</button>
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="sign-up">Sign Up</button>
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="email-otp">Email OTP</button>
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="phone-otp">Phone OTP</button>
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="google-login">Google Login</button>
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="github-login">GitHub Login</button>
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="forgot-password">Forgot Password</button>
+                  <button class="tab-btn rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300" data-tab-target="profile-creation">Profile Creation</button>
+                </div>
+
+                <div class="mt-5">
+                  <div data-tab-panel="sign-in" class="auth-panel rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <p class="text-sm text-slate-400">Welcome back</p>
+                        <h4 class="mt-1 text-2xl font-semibold">Sign in to your ResumeIQ AI workspace</h4>
+                      </div>
+                      
+                    </div>
+                    <div class="mt-6 grid gap-4">
+                      <label class="grid gap-2 text-sm"><span class="text-slate-300">Email</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none transition focus:border-cyan-400/40" value="student@resumeiq.ai" /></label>
+                      <label class="grid gap-2 text-sm"><span class="text-slate-300">Password</span><input type="password" class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none transition focus:border-cyan-400/40" value="**********" /></label>
+                      <div class="flex items-center justify-between text-sm text-slate-400"><label class="flex items-center gap-2"><input type="checkbox" checked class="accent-cyan-400" /> Remember me</label><button class="text-cyan-200 transition hover:text-cyan-100">Forgot password?</button></div>
+                      <button class="rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950">Sign In</button>
+                    </div>
+                  </div>
+
+                  <div data-tab-panel="sign-up" class="auth-panel hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Create your account</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Start with email and a minimal profile</h4>
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                      <label class="grid gap-2 text-sm"><span class="text-slate-300">Full name</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="Aarav Mehta" /></label>
+                      <label class="grid gap-2 text-sm"><span class="text-slate-300">Email</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="aarav@college.edu" /></label>
+                      <label class="grid gap-2 text-sm sm:col-span-2"><span class="text-slate-300">Password</span><input type="password" class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="************" /></label>
+                      <label class="grid gap-2 text-sm sm:col-span-2"><span class="text-slate-300">Primary goal</span><select class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40"><option>Internship hunting</option><option>Graduate job search</option><option>Campus placement</option></select></label>
+                    </div>
+                    <button class="mt-6 rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950">Create Account</button>
+                  </div>
+
+                  <div data-tab-panel="email-otp" class="auth-panel hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Email verification</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Enter the one-time code sent to your inbox</h4>
+                    <p class="mt-2 text-sm text-slate-300">Code sent to student@resumeiq.ai</p>
+                    <div class="mt-6 grid max-w-md grid-cols-6 gap-3">
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="3" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="9" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="1" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="4" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="8" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="2" />
+                    </div>
+                    <button class="mt-6 rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950">Verify Email</button>
+                  </div>
+
+                  <div data-tab-panel="phone-otp" class="auth-panel hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Phone verification</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Confirm the six-digit code on your mobile</h4>
+                    <label class="mt-6 block text-sm"><span class="text-slate-300">Phone number</span><input class="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="+91 98765 43210" /></label>
+                    <div class="mt-6 grid max-w-md grid-cols-6 gap-3">
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="6" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="4" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="0" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="7" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="1" />
+                      <input class="h-14 rounded-2xl border border-white/10 bg-slate-950/60 text-center text-xl outline-none" value="9" />
+                    </div>
+                    <button class="mt-6 rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950">Verify Phone</button>
+                  </div>
+
+                  <div data-tab-panel="google-login" class="auth-panel hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Social login</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Continue with Google for faster onboarding</h4>
+                    <button class="mt-6 flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm font-medium text-slate-100"><span class="h-5 w-5 rounded-full bg-white text-center text-[10px] leading-5 text-slate-950">G</span> Continue with Google</button>
+                    <div class="mt-5 grid gap-3 text-sm text-slate-300"><div class="rounded-2xl border border-white/10 bg-slate-950/50 p-4">Auto-fill name and avatar</div><div class="rounded-2xl border border-white/10 bg-slate-950/50 p-4">Skip password setup for now</div></div>
+                  </div>
+
+                  <div data-tab-panel="github-login" class="auth-panel hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Developer login</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Continue with GitHub for technical profiles</h4>
+                    <button class="mt-6 flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm font-medium text-slate-100"><span class="flex h-5 w-5 items-center justify-center rounded-full bg-white text-[9px] font-semibold leading-none text-slate-950">GH</span> Continue with GitHub</button>
+                    <div class="mt-5 rounded-2xl border border-white/10 bg-slate-950/50 p-4 text-sm text-slate-300">Link repositories, display technical skills, and speed up profile completion for engineering candidates.</div>
+                  </div>
+
+                  <div data-tab-panel="forgot-password" class="auth-panel hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Password recovery</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Reset access by email</h4>
+                    <label class="mt-6 block text-sm"><span class="text-slate-300">Email</span><input class="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="student@resumeiq.ai" /></label>
+                    <button class="mt-6 rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950">Send reset link</button>
+                  </div>
+
+                  <div data-tab-panel="profile-creation" class="auth-panel hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-6">
+                    <p class="text-sm text-slate-400">Profile creation</p>
+                    <h4 class="mt-1 text-2xl font-semibold">Finish setting up your student profile</h4>
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                      <label class="grid gap-2 text-sm"><span class="text-slate-300">College</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="B. K. Institute of Technology" /></label>
+                      <label class="grid gap-2 text-sm"><span class="text-slate-300">Graduation year</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="2026" /></label>
+                      <label class="grid gap-2 text-sm sm:col-span-2"><span class="text-slate-300">LinkedIn</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="linkedin.com/in/aaravmehta" /></label>
+                      <label class="grid gap-2 text-sm sm:col-span-2"><span class="text-slate-300">Skills</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="React, TypeScript, Figma, SQL" /></label>
+                    </div>
+                    <button class="mt-6 rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950">Save Profile</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="dashboard" class="preview-section">
+          <div class="mb-4 flex items-end justify-between gap-4">
+            <div><p class="section-label">03 / Dashboard</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A compact control center with scorecards, analytics, and action items.</h2></div>
+          </div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / dashboard</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+            <div class="grid gap-6 p-5 lg:grid-cols-[1.4fr_0.85fr] lg:p-6">
+              <div class="space-y-6">
+                <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                  <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.26em] text-slate-400">ATS Score</p><p class="mt-2 text-3xl font-semibold">86/100</p><p class="mt-2 text-sm text-emerald-200">+6 from last scan</p></div>
+                  <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.26em] text-slate-400">Profile Completion</p><p class="mt-2 text-3xl font-semibold">78%</p><p class="mt-2 text-sm text-cyan-200">3 fields left</p></div>
+                  <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.26em] text-slate-400">Applications</p><p class="mt-2 text-3xl font-semibold">34</p><p class="mt-2 text-sm text-violet-200">12 this week</p></div>
+                  <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.26em] text-slate-400">Interviews</p><p class="mt-2 text-3xl font-semibold">6</p><p class="mt-2 text-sm text-amber-200">2 tomorrow</p></div>
+                </div>
+
+                <div class="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+                  <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between gap-4"><div><p class="text-sm text-slate-400">Analytics charts</p><h3 class="text-xl font-semibold">Resume improvement trend</h3></div><div class="mini-chip rounded-full px-3 py-1 text-xs text-slate-300">Last 8 weeks</div></div>
+                    <svg viewBox="0 0 700 250" class="mt-4 h-64 w-full">
+                      <defs>
+                        <linearGradient id="dashFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(125,211,252,0.4)" /><stop offset="100%" stop-color="rgba(125,211,252,0)" /></linearGradient>
+                        <linearGradient id="dashLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#22d3ee" /><stop offset="100%" stop-color="#8b5cf6" /></linearGradient>
+                      </defs>
+                      <rect x="0" y="0" width="700" height="250" rx="24" fill="rgba(2,6,23,0.35)"></rect>
+                      <g stroke="rgba(148,163,184,0.08)">
+                        <line x1="30" y1="48" x2="670" y2="48" /><line x1="30" y1="96" x2="670" y2="96" /><line x1="30" y1="144" x2="670" y2="144" /><line x1="30" y1="192" x2="670" y2="192" />
+                      </g>
+                      <path d="M30 176 C80 168, 116 150, 162 148 C210 146, 250 118, 300 104 C352 90, 386 112, 430 94 C484 74, 514 58, 566 66 C606 72, 636 42, 670 38 L670 236 L30 236 Z" fill="url(#dashFill)"></path>
+                      <polyline points="30,176 80,168 162,148 210,146 300,104 386,112 430,94 514,58 566,66 636,42 670,38" fill="none" stroke="url(#dashLine)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                      <g fill="#cbd5e1" font-size="11" opacity="0.6"><text x="34" y="220">W1</text><text x="126" y="220">W2</text><text x="218" y="220">W3</text><text x="310" y="220">W4</text><text x="402" y="220">W5</text><text x="494" y="220">W6</text><text x="586" y="220">W7</text></g>
+                    </svg>
+                    <div class="mt-4 grid gap-3 sm:grid-cols-3">
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Resume score</p><p class="mt-2 text-2xl font-semibold">92</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Keywords</p><p class="mt-2 text-2xl font-semibold">47</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/60 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Clarity</p><p class="mt-2 text-2xl font-semibold">89</p></div>
+                    </div>
+                  </div>
+                  <div class="space-y-6">
+                    <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                      <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">AI suggestions</h3><span class="mini-chip rounded-full px-3 py-1 text-xs text-slate-300">3 actionable items</span></div>
+                      <ul class="mt-4 space-y-3 text-sm text-slate-300">
+                        <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Add quantitative impact to your latest internship bullet points.</li>
+                        <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Surface React, TypeScript, and SQL earlier in the summary section.</li>
+                        <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Include one product metrics project to improve seniority signal.</li>
+                      </ul>
+                    </div>
+                    <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                      <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Notifications</h3><span class="text-xs text-slate-400">Now</span></div>
+                      <div class="mt-4 space-y-3 text-sm">
+                        <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium text-white">Amazon Software Internship</p><p class="mt-1 text-slate-300">Your resume moved from review to shortlist.</p></div>
+                        <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium text-white">Mock interview reminder</p><p class="mt-1 text-slate-300">Technical round scheduled for 6:30 PM today.</p></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+                  <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Applications tracker</h3><span class="text-xs text-slate-400">34 tracked</span></div>
+                    <div class="mt-4 space-y-3 text-sm">
+                      <div><div class="flex items-center justify-between"><span>Applied</span><span>18</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[65%] rounded-full bg-cyan-400"></div></div></div>
+                      <div><div class="flex items-center justify-between"><span>Interview</span><span>6</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[22%] rounded-full bg-violet-400"></div></div></div>
+                      <div><div class="flex items-center justify-between"><span>Selected</span><span>3</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[10%] rounded-full bg-emerald-400"></div></div></div>
+                      <div><div class="flex items-center justify-between"><span>Rejected</span><span>4</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[14%] rounded-full bg-rose-400"></div></div></div>
+                    </div>
+                  </div>
+                  <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Recent activity</h3><span class="text-xs text-slate-400">Live feed</span></div>
+                    <div class="mt-4 space-y-3">
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-sm text-white">Uploaded v4 resume</p><p class="mt-1 text-xs text-slate-400">10 minutes ago</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-sm text-white">Applied to Frontend Intern at Finverse</p><p class="mt-1 text-xs text-slate-400">43 minutes ago</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-sm text-white">Interview prep score updated to 91</p><p class="mt-1 text-xs text-slate-400">Today</p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Profile completion</h3><span class="text-xs text-slate-400">78%</span></div>
+                <div class="mt-5 flex items-center gap-4">
+                  <div class="relative h-28 w-28">
+                    <svg viewBox="0 0 120 120" class="h-full w-full">
+                      <circle cx="60" cy="60" r="46" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="14"></circle>
+                      <circle cx="60" cy="60" r="46" fill="none" stroke="url(#dashRing)" stroke-width="14" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="64" class="ring-progress"></circle>
+                      <defs><linearGradient id="dashRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22d3ee" /><stop offset="100%" stop-color="#10b981" /></linearGradient></defs>
+                      <text x="60" y="58" text-anchor="middle" class="fill-white text-[24px] font-semibold">78</text>
+                      <text x="60" y="78" text-anchor="middle" class="fill-slate-400 text-[11px] tracking-[0.18em]">COMPLETE</text>
+                    </svg>
+                  </div>
+                  <div class="space-y-3 text-sm text-slate-300">
+                    <div class="flex items-center justify-between gap-4"><span>Resume PDF</span><span class="text-emerald-200">Done</span></div>
+                    <div class="flex items-center justify-between gap-4"><span>LinkedIn</span><span class="text-emerald-200">Done</span></div>
+                    <div class="flex items-center justify-between gap-4"><span>Portfolio</span><span class="text-amber-200">Add link</span></div>
+                    <div class="flex items-center justify-between gap-4"><span>Projects</span><span class="text-amber-200">2 remaining</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="upload" class="preview-section">
+          <div class="mb-4"><p class="section-label">04 / Resume Upload</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Upload any resume — AI extracts every detail instantly.</h2></div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / upload-resume</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+
+            <!-- DROP ZONE -->
+            <div id="upload-dropzone" class="relative m-5 rounded-[1.75rem] border-2 border-dashed border-cyan-400/40 bg-cyan-400/5 p-10 text-center transition hover:border-cyan-400/70 hover:bg-cyan-400/10 cursor-pointer">
+              <input type="file" id="resume-file-input" accept=".pdf,.doc,.docx,.txt,.rtf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+              <div id="dropzone-idle">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400/10 text-3xl text-cyan-300">📄</div>
+                <h3 class="mt-4 text-2xl font-semibold">Drop your resume here</h3>
+                <p class="mt-2 text-sm text-slate-400">Supports PDF, DOCX, DOC, TXT, RTF — up to 10 MB</p>
+                <p class="mt-3 text-xs text-cyan-300/70">AI will extract your name, email, phone, skills, experience, education, projects and give you a full preview</p>
+                <div class="mt-6 flex flex-wrap justify-center gap-3 pointer-events-none">
+                  <span class="rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950">Choose file</span>
+                  <span class="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-slate-100">or drag &amp; drop</span>
+                </div>
+              </div>
+              <div id="dropzone-loading" class="hidden">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-400/10 text-3xl">⚙️</div>
+                <h3 class="mt-4 text-2xl font-semibold text-violet-200" id="loading-stage">Reading file…</h3>
+                <p class="mt-2 text-sm text-slate-400">Claude AI is extracting your resume details</p>
+                <div class="mt-6 mx-auto max-w-sm space-y-3 text-sm text-left">
+                  <div><div class="flex justify-between mb-1"><span id="prog-label-1" class="text-slate-400">Parsing document</span><span id="prog-val-1" class="text-slate-500">0%</span></div><div class="h-1.5 rounded-full bg-white/5"><div id="prog-bar-1" class="h-1.5 rounded-full bg-cyan-400 transition-all duration-500" style="width:0%"></div></div></div>
+                  <div><div class="flex justify-between mb-1"><span id="prog-label-2" class="text-slate-400">Extracting entities</span><span id="prog-val-2" class="text-slate-500">0%</span></div><div class="h-1.5 rounded-full bg-white/5"><div id="prog-bar-2" class="h-1.5 rounded-full bg-violet-400 transition-all duration-500" style="width:0%"></div></div></div>
+                  <div><div class="flex justify-between mb-1"><span id="prog-label-3" class="text-slate-400">Scoring &amp; normalizing</span><span id="prog-val-3" class="text-slate-500">0%</span></div><div class="h-1.5 rounded-full bg-white/5"><div id="prog-bar-3" class="h-1.5 rounded-full bg-emerald-400 transition-all duration-500" style="width:0%"></div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RESULTS (hidden until parsed) -->
+            <div id="upload-results" class="hidden px-5 pb-5 space-y-5">
+
+              <!-- File info banner -->
+              <div class="flex items-center gap-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-5 py-4">
+                <span class="text-2xl">✅</span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-semibold text-emerald-200" id="result-filename">resume.pdf</p>
+                  <p class="text-xs text-slate-400 mt-0.5" id="result-filemeta">Parsed successfully</p>
+                </div>
+                <button onclick="resetUpload()" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-slate-300 hover:bg-white/10 transition">Upload new</button>
+              </div>
+
+              <div class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+                <!-- LEFT: profile cards + skills -->
+                <div class="space-y-5">
+                  <!-- Identity -->
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between mb-4"><h3 class="text-lg font-semibold">Extracted Profile</h3><span class="mini-chip rounded-full px-3 py-1 text-xs text-emerald-200">AI Parsed</span></div>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Name</p><p class="mt-1.5 font-semibold text-white" id="res-name">—</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                        <div class="flex items-center gap-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(125,211,252,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Email</p></div>
+                        <p class="mt-1.5 font-medium text-slate-200 text-sm break-all" id="res-email">—</p>
+                      </div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                        <div class="flex items-center gap-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(125,211,252,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Phone</p></div>
+                        <p class="mt-1.5 font-medium text-slate-200" id="res-phone">—</p>
+                      </div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Location</p><p class="mt-1.5 font-medium text-slate-200" id="res-location">—</p></div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                        <div class="flex items-center gap-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(125,211,252,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg><p class="text-xs uppercase tracking-[0.22em] text-slate-400">GitHub</p></div>
+                        <p class="mt-1.5 font-medium text-cyan-300 text-sm break-all" id="res-github">—</p>
+                      </div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                        <div class="flex items-center gap-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(125,211,252,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><p class="text-xs uppercase tracking-[0.22em] text-slate-400">LinkedIn / Portfolio</p></div>
+                        <p class="mt-1.5 font-medium text-cyan-300 text-sm break-all" id="res-links">—</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Skills -->
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                    <h3 class="text-lg font-semibold mb-3">Skills Detected</h3>
+                    <div id="res-skills" class="flex flex-wrap gap-2 text-sm"></div>
+                  </div>
+                </div>
+
+                <!-- RIGHT: experience, projects, summary, ATS score -->
+                <div class="space-y-5">
+                  <!-- ATS score badge -->
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 flex items-center gap-5">
+                    <div class="relative h-20 w-20 flex-shrink-0">
+                      <svg viewBox="0 0 100 100" class="h-full w-full">
+                        <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="12"></circle>
+                        <circle cx="50" cy="50" r="38" fill="none" stroke="url(#uploadAtsRing)" stroke-width="12" stroke-linecap="round" stroke-dasharray="239" id="ats-ring-upload" stroke-dashoffset="239" class="ring-progress" style="transition:stroke-dashoffset 1s ease"></circle>
+                        <defs><linearGradient id="uploadAtsRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs>
+                        <text x="50" y="54" text-anchor="middle" class="fill-white" style="font-size:22px;font-weight:700" id="ats-score-text">—</text>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-xs uppercase tracking-[0.22em] text-slate-400">ATS Score</p>
+                      <p class="text-2xl font-bold text-white mt-1" id="ats-score-label">Calculating…</p>
+                      <p class="text-xs text-slate-400 mt-1" id="ats-score-desc">Based on formatting, keywords, and structure</p>
+                    </div>
+                  </div>
+
+                  <!-- Experience -->
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                    <h3 class="text-lg font-semibold mb-3">Work Experience</h3>
+                    <div id="res-experience" class="space-y-3 text-sm text-slate-300"></div>
+                  </div>
+
+                  <!-- Projects -->
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                    <h3 class="text-lg font-semibold mb-3">Projects</h3>
+                    <div id="res-projects" class="space-y-3 text-sm text-slate-300"></div>
+                  </div>
+
+                  <!-- Summary -->
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between mb-3"><h3 class="text-lg font-semibold">Professional Summary</h3><span class="text-xs text-slate-400">AI extracted</span></div>
+                    <p id="res-summary" class="text-sm leading-7 text-slate-300 font-mono bg-slate-950/70 rounded-2xl border border-white/10 p-4">—</p>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            <!-- Error state -->
+            <div id="upload-error" class="hidden mx-5 mb-5 rounded-2xl border border-rose-400/30 bg-rose-400/10 p-5 text-sm text-rose-200">
+              <p class="font-semibold">⚠️ Extraction failed</p>
+              <p id="upload-error-msg" class="mt-1 text-rose-300/80"></p>
+              <button onclick="resetUpload()" class="mt-3 rounded-full border border-rose-300/30 bg-rose-400/15 px-4 py-2 text-xs text-rose-100">Try again</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="ats" class="preview-section">
+          <div class="mb-4"><p class="section-label">05 / ATS Analysis</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Scored like an ATS engine, explained like a product designer.</h2></div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / ats-result</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+            <div class="grid gap-6 p-5 lg:grid-cols-[0.9fr_1.1fr] lg:p-6">
+              <div class="space-y-6">
+                <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 text-center">
+                  <p class="text-sm text-slate-400">ATS Score</p>
+                  <div class="mx-auto mt-4 w-56">
+                    <svg viewBox="0 0 200 200" class="h-56 w-56">
+                      <circle cx="100" cy="100" r="74" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="18"></circle>
+                      <circle cx="100" cy="100" r="74" fill="none" stroke="url(#atsRing)" stroke-width="18" stroke-linecap="round" stroke-dasharray="465" stroke-dashoffset="83" class="ring-progress"></circle>
+                      <defs><linearGradient id="atsRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22d3ee" /><stop offset="100%" stop-color="#a855f7" /></linearGradient></defs>
+                      <text x="100" y="96" text-anchor="middle" class="fill-white text-[36px] font-semibold">82</text>
+                      <text x="100" y="120" text-anchor="middle" class="fill-slate-400 text-[11px] tracking-[0.26em]">ATS READY</text>
+                    </svg>
+                  </div>
+                  <p class="mt-1 text-sm text-slate-300">Resume score 91, ATS score 82, keyword match 88.</p>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Resume Score</p><p class="mt-2 text-3xl font-semibold">91</p><p class="mt-2 text-sm text-emerald-200">Strong formatting and clarity</p></div>
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Keyword Match</p><p class="mt-2 text-3xl font-semibold">88%</p><p class="mt-2 text-sm text-cyan-200">12 aligned terms missing</p></div>
+                </div>
+              </div>
+              <div class="space-y-6">
+                <div class="grid gap-4 xl:grid-cols-2">
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                    <h3 class="text-xl font-semibold">Skills found</h3>
+                    <div class="mt-4 flex flex-wrap gap-2 text-sm">
+                      <span class="mini-chip rounded-full px-3 py-2 text-cyan-200">React</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">TypeScript</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">Tailwind CSS</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">Node.js</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">SQL</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">REST API</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">GitHub</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">Figma</span>
+                    </div>
+                  </div>
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                    <h3 class="text-xl font-semibold">Missing skills</h3>
+                    <div class="mt-4 flex flex-wrap gap-2 text-sm">
+                      <span class="mini-chip rounded-full px-3 py-2 text-rose-200">Docker</span><span class="mini-chip rounded-full px-3 py-2 text-rose-200">Testing</span><span class="mini-chip rounded-full px-3 py-2 text-rose-200">CI/CD</span><span class="mini-chip rounded-full px-3 py-2 text-rose-200">AWS</span><span class="mini-chip rounded-full px-3 py-2 text-rose-200">Accessibility</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Improvement suggestions</h3><span class="text-xs text-slate-400">AI recommendations</span></div>
+                  <ul class="mt-4 space-y-3 text-sm text-slate-300">
+                    <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Add a project section that demonstrates CI/CD or deployment workflow.</li>
+                    <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Move React and TypeScript into the summary and headline bullets for stronger early keyword placement.</li>
+                    <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Include a quantified impact line for the internship role to improve recruiter confidence.</li>
+                  </ul>
+                </div>
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Keyword map</h3><span class="text-xs text-slate-400">94 matched terms scanned</span></div>
+                  <div class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">React</p><p class="mt-2 text-lg font-semibold text-emerald-200">Found</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">TypeScript</p><p class="mt-2 text-lg font-semibold text-emerald-200">Found</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">SQL</p><p class="mt-2 text-lg font-semibold text-emerald-200">Found</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">AWS</p><p class="mt-2 text-lg font-semibold text-rose-200">Missing</p></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="jobs" class="preview-section">
+          <div class="mb-4"><p class="section-label">06 / Job Match</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Role matching that ranks opportunities by fit, not just title keywords.</h2></div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / job-match</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+            <div class="grid gap-6 p-5 lg:grid-cols-[0.85fr_1.15fr] lg:p-6">
+              <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                <p class="text-sm text-slate-400">Match profile</p>
+                <h3 class="mt-1 text-2xl font-semibold">Aarav Mehta</h3>
+                <div class="mt-4 grid gap-4">
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-center justify-between"><span class="text-sm text-slate-300">Frontend Intern</span><span class="text-sm font-semibold text-emerald-200">94%</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[94%] rounded-full bg-emerald-400"></div></div><p class="mt-3 text-sm text-slate-300">Best match for React, TypeScript, and UI systems.</p></div>
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-center justify-between"><span class="text-sm text-slate-300">Product Analyst Intern</span><span class="text-sm font-semibold text-cyan-200">81%</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[81%] rounded-full bg-cyan-400"></div></div><p class="mt-3 text-sm text-slate-300">Good on analytics, needs stronger business metrics.</p></div>
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-center justify-between"><span class="text-sm text-slate-300">UX Engineer Intern</span><span class="text-sm font-semibold text-violet-200">76%</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[76%] rounded-full bg-violet-400"></div></div><p class="mt-3 text-sm text-slate-300">Needs more design systems and accessibility evidence.</p></div>
+                </div>
+              </div>
+              <div class="space-y-4">
+                <div class="grid gap-4 xl:grid-cols-3">
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Shortlisted jobs</p><p class="mt-2 text-3xl font-semibold">12</p><p class="mt-2 text-sm text-emerald-200">7 new this week</p></div>
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Avg. match</p><p class="mt-2 text-3xl font-semibold">84%</p><p class="mt-2 text-sm text-cyan-200">Strong role alignment</p></div>
+                  <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Apply ready</p><p class="mt-2 text-3xl font-semibold">9</p><p class="mt-2 text-sm text-violet-200">Resume score above 80</p></div>
+                </div>
+                <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Recommended roles</h3><span class="text-xs text-slate-400">Preview data</span></div>
+                  <div class="mt-4 grid gap-4 lg:grid-cols-2">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-start justify-between"><div><p class="font-medium text-white">Frontend Intern</p><p class="mt-1 text-sm text-slate-400">Finverse, Bengaluru</p></div><div class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs text-emerald-200">94%</div></div><p class="mt-3 text-sm text-slate-300">React systems, dashboard UI, and product polish.</p><button class="mt-4 rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950">Apply now</button></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-start justify-between"><div><p class="font-medium text-white">Product Analyst Intern</p><p class="mt-1 text-sm text-slate-400">Orbit Analytics, Remote</p></div><div class="rounded-full bg-cyan-400/10 px-3 py-1 text-xs text-cyan-200">81%</div></div><p class="mt-3 text-sm text-slate-300">Metrics dashboard, SQL, and experiment reporting.</p><button class="mt-4 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-100">Save</button></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-start justify-between"><div><p class="font-medium text-white">UX Engineer Intern</p><p class="mt-1 text-sm text-slate-400">Notion-like startup, Hybrid</p></div><div class="rounded-full bg-violet-400/10 px-3 py-1 text-xs text-violet-200">76%</div></div><p class="mt-3 text-sm text-slate-300">Design tokens, accessibility, and handoff collaboration.</p><button class="mt-4 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-100">Compare</button></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-start justify-between"><div><p class="font-medium text-white">Platform Intern</p><p class="mt-1 text-sm text-slate-400">CloudSpring, Hybrid</p></div><div class="rounded-full bg-amber-400/10 px-3 py-1 text-xs text-amber-200">73%</div></div><p class="mt-3 text-sm text-slate-300">Good growth opportunity, stronger backend signal needed.</p><button class="mt-4 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-100">Review</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="tracker" class="preview-section">
+          <div class="mb-4"><p class="section-label">07 / Internship Tracker</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A kanban-based pipeline with statistics, history, and clear next actions.</h2></div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / internship-tracker</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+            <div class="p-5 lg:p-6">
+              <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+                <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Applied</p><p class="mt-2 text-3xl font-semibold">18</p></div>
+                <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Interview</p><p class="mt-2 text-3xl font-semibold">6</p></div>
+                <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Selected</p><p class="mt-2 text-3xl font-semibold">3</p></div>
+                <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Rejected</p><p class="mt-2 text-3xl font-semibold">4</p></div>
+                <div class="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4"><p class="text-xs uppercase tracking-[0.24em] text-slate-400">Wishlist</p><p class="mt-2 text-3xl font-semibold">9</p></div>
+              </div>
+
+              <div class="mt-6 grid gap-4 xl:grid-cols-5">
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="font-semibold">Applied</h3><span class="text-xs text-slate-400">18</span></div>
+                  <div class="mt-4 space-y-3">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Finverse</p><p class="mt-1 text-xs text-slate-400">Frontend Intern - 2d</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Orbit Analytics</p><p class="mt-1 text-xs text-slate-400">Product Analyst - 4d</p></div>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="font-semibold">Interview</h3><span class="text-xs text-slate-400">6</span></div>
+                  <div class="mt-4 space-y-3">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">CloudSpring</p><p class="mt-1 text-xs text-slate-400">Round 1 scheduled</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Notion-like startup</p><p class="mt-1 text-xs text-slate-400">Portfolio review</p></div>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="font-semibold">Selected</h3><span class="text-xs text-slate-400">3</span></div>
+                  <div class="mt-4 space-y-3">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">BrightApps</p><p class="mt-1 text-xs text-slate-400">Offer accepted</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Delta Labs</p><p class="mt-1 text-xs text-slate-400">Waiting onboarding</p></div>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="font-semibold">Rejected</h3><span class="text-xs text-slate-400">4</span></div>
+                  <div class="mt-4 space-y-3">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">ScaleStack</p><p class="mt-1 text-xs text-slate-400">No response</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Mosaic Design</p><p class="mt-1 text-xs text-slate-400">Closed role</p></div>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="font-semibold">Wishlist</h3><span class="text-xs text-slate-400">9</span></div>
+                  <div class="mt-4 space-y-3">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Linear</p><p class="mt-1 text-xs text-slate-400">Research open roles</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Vercel</p><p class="mt-1 text-xs text-slate-400">Frontend openings</p></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Application history</h3><span class="text-xs text-slate-400">Recent 8 entries</span></div>
+                  <div class="mt-4 overflow-hidden rounded-2xl border border-white/10">
+                    <table class="min-w-full text-left text-sm">
+                      <thead class="bg-slate-950/60 text-slate-400"><tr><th class="px-4 py-3 font-medium">Company</th><th class="px-4 py-3 font-medium">Role</th><th class="px-4 py-3 font-medium">Date</th><th class="px-4 py-3 font-medium">Status</th></tr></thead>
+                      <tbody class="divide-y divide-white/10 bg-slate-950/35">
+                        <tr><td class="px-4 py-3">Finverse</td><td class="px-4 py-3">Frontend Intern</td><td class="px-4 py-3">Jun 2</td><td class="px-4 py-3 text-emerald-200">Interview</td></tr>
+                        <tr><td class="px-4 py-3">Orbit Analytics</td><td class="px-4 py-3">Product Analyst</td><td class="px-4 py-3">Jun 1</td><td class="px-4 py-3 text-cyan-200">Applied</td></tr>
+                        <tr><td class="px-4 py-3">BrightApps</td><td class="px-4 py-3">UI Intern</td><td class="px-4 py-3">May 29</td><td class="px-4 py-3 text-emerald-200">Selected</td></tr>
+                        <tr><td class="px-4 py-3">ScaleStack</td><td class="px-4 py-3">Platform Intern</td><td class="px-4 py-3">May 27</td><td class="px-4 py-3 text-rose-200">Rejected</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Pipeline stats</h3><span class="text-xs text-slate-400">Weekly</span></div>
+                  <div class="mt-4 space-y-4 text-sm">
+                    <div><div class="flex items-center justify-between"><span>Applied</span><span>18</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[72%] rounded-full bg-cyan-400"></div></div></div>
+                    <div><div class="flex items-center justify-between"><span>Interview</span><span>6</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[28%] rounded-full bg-violet-400"></div></div></div>
+                    <div><div class="flex items-center justify-between"><span>Selected</span><span>3</span></div><div class="mt-2 h-2 rounded-full bg-white/5"><div class="h-2 w-[14%] rounded-full bg-emerald-400"></div></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="interview" class="preview-section">
+          <div class="mb-4"><p class="section-label">08 / Interview Preparation Dashboard</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Mock interviews, AI feedback, and progress metrics in one focused workspace.</h2></div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / interview-prep</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+            <div class="grid gap-6 p-5 lg:grid-cols-[1.05fr_0.95fr] lg:p-6">
+              <div class="space-y-6">
+                <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><div><p class="text-sm text-slate-400">Mock interview</p><h3 class="text-2xl font-semibold">Frontend Intern, Finverse</h3></div><div class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs text-emerald-200">AI score 91</div></div>
+                  <div class="mt-5 grid gap-4 sm:grid-cols-3">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Clarity</p><p class="mt-2 text-2xl font-semibold">94</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Depth</p><p class="mt-2 text-2xl font-semibold">88</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs uppercase tracking-[0.22em] text-slate-400">Confidence</p><p class="mt-2 text-2xl font-semibold">91</p></div>
+                  </div>
+                  <div class="mt-5 rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                    <div class="flex items-center justify-between"><span class="text-sm text-slate-300">Progress tracking</span><span class="text-xs text-slate-400">Week 3 of 4</span></div>
+                    <div class="mt-3 h-2 rounded-full bg-white/5"><div class="h-2 w-[78%] rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400"></div></div>
+                  </div>
+                </div>
+                <div class="grid gap-4 xl:grid-cols-2">
+                  <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Technical questions</h3><span class="text-xs text-slate-400">6 queued</span></div>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-300">
+                      <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">How would you optimize a React list rendering bottleneck?</li>
+                      <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Explain how you structure reusable UI components in TypeScript.</li>
+                      <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">What trade-offs would you consider when adding infinite scroll?</li>
+                    </ul>
+                  </div>
+                  <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Behavioral questions</h3><span class="text-xs text-slate-400">4 queued</span></div>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-300">
+                      <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Tell me about a project where your first approach did not work.</li>
+                      <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Describe a time you received hard feedback from a teammate.</li>
+                      <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">How do you manage ambiguity on a new product team?</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-6">
+                <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">AI feedback</h3><span class="text-xs text-slate-400">Latest mock</span></div>
+                  <div class="mt-4 space-y-3 text-sm text-slate-300">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Your structure improved, but the middle section still needs a sharper impact summary.</div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Add one clear trade-off example to show decision-making under constraints.</div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Great pace and eye contact, slightly reduce filler words in longer answers.</div>
+                  </div>
+                </div>
+                <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Recent mock interviews</h3><span class="text-xs text-slate-400">3 sessions</span></div>
+                  <div class="mt-4 space-y-3 text-sm">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-center justify-between"><span>System design basics</span><span class="text-emerald-200">88</span></div><p class="mt-1 text-slate-400">Completed yesterday</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-center justify-between"><span>React deep dive</span><span class="text-emerald-200">91</span></div><p class="mt-1 text-slate-400">Completed today</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><div class="flex items-center justify-between"><span>Behavioral round</span><span class="text-cyan-200">86</span></div><p class="mt-1 text-slate-400">Scheduled for tomorrow</p></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="profile" class="preview-section">
+          <div class="mb-4"><p class="section-label">09 / Profile</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A rich profile layout with editable fields and recruiter-ready links.</h2></div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / profile</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+            <div class="grid gap-6 p-5 lg:grid-cols-[0.75fr_1.25fr] lg:p-6">
+              <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 text-center">
+                <div class="mx-auto flex h-28 w-28 items-center justify-center rounded-full border border-cyan-400/20 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.25),rgba(34,211,238,0.06))] text-3xl font-semibold text-cyan-100">AM</div>
+                <h3 class="mt-5 text-2xl font-semibold">Aarav Mehta</h3>
+                <p class="mt-2 text-sm text-slate-400">Frontend engineer candidate</p>
+                <div class="mt-6 space-y-3 text-left text-sm">
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">Email</p><p class="mt-1">aarav.mehta@college.edu</p></div>
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">Phone</p><p class="mt-1">+91 98765 43210</p></div>
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">Graduation</p><p class="mt-1">2026</p></div>
+                </div>
+              </div>
+              <div class="space-y-6">
+                <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Editable profile details</h3><span class="text-xs text-slate-400">Saved locally in preview</span></div>
+                  <div class="mt-5 grid gap-4 sm:grid-cols-2">
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">Full name</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="Aarav Mehta" /></label>
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">Email</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="aarav.mehta@college.edu" /></label>
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">Phone number</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="+91 98765 43210" /></label>
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">College</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="B. K. Institute of Technology" /></label>
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">Degree</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="B.Tech in Computer Science" /></label>
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">Graduation year</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="2026" /></label>
+                  </div>
+                </div>
+                <div class="grid gap-4 lg:grid-cols-2">
+                  <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Skills</h3><span class="text-xs text-slate-400">10 visible</span></div>
+                    <div class="mt-4 flex flex-wrap gap-2 text-sm"><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">React</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">TypeScript</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">Tailwind</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">SQL</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">Figma</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">Node.js</span><span class="mini-chip rounded-full px-3 py-2 text-cyan-200">Git</span></div>
+                  </div>
+                  <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                    <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Links</h3><span class="text-xs text-slate-400">Public</span></div>
+                    <div class="mt-4 space-y-3 text-sm text-slate-300">
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">GitHub: github.com/akashdev</div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">LinkedIn: linkedin.com/in/aaravmehta</div>
+                      <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Portfolio: aarav.dev</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Resume file</h3><span class="text-xs text-emerald-200">Uploaded</span></div>
+                  <div class="mt-4 rounded-2xl border border-white/10 bg-slate-950/55 p-4 text-sm text-slate-300">Aarav_Mehta_Resume_v4.pdf - 3.1 MB - Optimized for ATS and recruiter scans.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="settings" class="preview-section">
+          <div class="mb-4"><p class="section-label">10 / Settings</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A structured settings area with account, security, notifications, and billing.</h2></div>
+          <div class="browser-frame rounded-[2rem]">
+            <div class="browser-bar"><div class="browser-dots"><span class="browser-dot bg-rose-400/90"></span><span class="browser-dot bg-amber-300/90"></span><span class="browser-dot bg-emerald-400/90"></span></div><div class="browser-url">resumeiq.ai / settings</div><button onclick="activateAuthTab('sign-in'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Sign in to your account', 'info');" style="margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14));border:1px solid rgba(34,211,238,0.3);color:#e2e8f0;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;" onmouseenter="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.28),rgba(168,85,247,0.28))';this.style.borderColor='rgba(34,211,238,0.7)'" onmouseleave="this.style.background='linear-gradient(135deg,rgba(34,211,238,0.14),rgba(168,85,247,0.14))';this.style.borderColor='rgba(34,211,238,0.3)'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Sign In</button></div>
+            <div class="grid gap-6 p-5 lg:grid-cols-[1fr_0.85fr] lg:p-6">
+              <div class="space-y-4">
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Account settings</h3><span class="text-xs text-slate-400">Profile access</span></div>
+                  <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">Display name</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="Aarav Mehta" /></label>
+                    <label class="grid gap-2 text-sm"><span class="text-slate-300">Timezone</span><input class="rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 outline-none focus:border-cyan-400/40" value="Asia/Kolkata" /></label>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Security settings</h3><span class="text-xs text-slate-400">Authentication</span></div>
+                  <div class="mt-4 space-y-3 text-sm">
+                    <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/55 p-4"><span>Two-factor authentication</span><label class="relative inline-flex cursor-pointer items-center"><input type="checkbox" class="peer sr-only" checked><span class="h-6 w-11 rounded-full bg-cyan-400/30 peer-checked:bg-cyan-400/80"></span><span class="absolute left-1 h-4 w-4 rounded-full bg-white transition peer-checked:translate-x-5"></span></label></div>
+                    <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/55 p-4"><span>Password login fallback</span><label class="relative inline-flex cursor-pointer items-center"><input type="checkbox" class="peer sr-only" checked><span class="h-6 w-11 rounded-full bg-cyan-400/30 peer-checked:bg-cyan-400/80"></span><span class="absolute left-1 h-4 w-4 rounded-full bg-white transition peer-checked:translate-x-5"></span></label></div>
+                    <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/55 p-4"><span>Session timeout</span><span class="text-slate-400">30 days</span></div>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Notifications</h3><span class="text-xs text-slate-400">Email and push</span></div>
+                  <div class="mt-4 space-y-3 text-sm">
+                    <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/55 p-4"><span>Application status changes</span><label class="relative inline-flex cursor-pointer items-center"><input type="checkbox" class="peer sr-only" checked><span class="h-6 w-11 rounded-full bg-cyan-400/30 peer-checked:bg-cyan-400/80"></span><span class="absolute left-1 h-4 w-4 rounded-full bg-white transition peer-checked:translate-x-5"></span></label></div>
+                    <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/55 p-4"><span>Interview reminders</span><label class="relative inline-flex cursor-pointer items-center"><input type="checkbox" class="peer sr-only" checked><span class="h-6 w-11 rounded-full bg-cyan-400/30 peer-checked:bg-cyan-400/80"></span><span class="absolute left-1 h-4 w-4 rounded-full bg-white transition peer-checked:translate-x-5"></span></label></div>
+                    <div class="flex items-center justify-between rounded-2xl border border-white/10 bg-slate-950/55 p-4"><span>Product announcements</span><label class="relative inline-flex cursor-pointer items-center"><input type="checkbox" class="peer sr-only"><span class="h-6 w-11 rounded-full bg-white/10 peer-checked:bg-cyan-400/80"></span><span class="absolute left-1 h-4 w-4 rounded-full bg-white transition peer-checked:translate-x-5"></span></label></div>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-6">
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Theme settings</h3><span class="text-xs text-slate-400">Dark mode</span></div>
+                  <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-2xl border border-cyan-400/30 bg-cyan-400/10 p-4"><p class="font-medium text-cyan-100">Midnight</p><p class="mt-1 text-sm text-cyan-50/70">Current</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium text-white">Graphite</p><p class="mt-1 text-sm text-slate-400">Alternate</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium text-white">Ocean</p><p class="mt-1 text-sm text-slate-400">Alternate</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium text-white">Aurora</p><p class="mt-1 text-sm text-slate-400">Alternate</p></div>
+                  </div>
+                </div>
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Subscription</h3><span class="text-xs text-emerald-200">Pro plan active</span></div>
+                  <div class="mt-4 rounded-2xl border border-white/10 bg-slate-950/55 p-4 text-sm text-slate-300">$12/month, unlimited ATS scans, job matching, interview prep, and internship tracking.</div>
+                </div>
+                <div class="rounded-[1.6rem] border border-rose-400/20 bg-rose-400/10 p-5">
+                  <h3 class="text-xl font-semibold text-rose-100">Delete account</h3>
+                  <p class="mt-2 text-sm text-rose-50/80">Preview only. In production this would be protected by confirmations and re-authentication.</p>
+                  <button class="mt-4 rounded-full border border-rose-300/30 bg-rose-400/15 px-4 py-2 text-sm font-medium text-rose-100">Delete account</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="mobile" class="preview-section">
+          <div class="mb-4"><p class="section-label">11 / Mobile Preview</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A phone-sized experience showing the product at its smallest breakpoint.</h2></div>
+          <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div class="device-frame mx-auto w-full max-w-[420px] p-4 pt-8">
+              <div class="device-notch"></div>
+              <div class="space-y-4 rounded-[1.5rem] border border-white/10 bg-slate-950/70 p-4">
+                <div class="flex items-center justify-between text-sm"><div><p class="font-semibold">ResumeIQ AI</p><p class="text-xs text-slate-400">Mobile dashboard</p></div><div class="h-9 w-9 rounded-full bg-cyan-400/10"></div></div>
+                <div class="rounded-[1.35rem] border border-white/10 bg-gradient-to-br from-cyan-400/15 to-violet-500/10 p-4">
+                  <p class="text-xs text-slate-400">ATS score</p>
+                  <div class="mt-2 flex items-end justify-between"><span class="text-4xl font-semibold">86</span><span class="text-xs text-emerald-200">+6 this week</span></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                  <div class="rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-3"><p class="text-xs text-slate-400">Apps</p><p class="mt-2 text-xl font-semibold">34</p></div>
+                  <div class="rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-3"><p class="text-xs text-slate-400">Interviews</p><p class="mt-2 text-xl font-semibold">6</p></div>
+                </div>
+                <div class="rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><p class="text-sm font-semibold">Next action</p><span class="text-xs text-cyan-200">Ready</span></div>
+                  <p class="mt-2 text-sm text-slate-300">Review 3 missing skills before applying to Finverse.</p>
+                </div>
+                <div class="rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><p class="text-sm font-semibold">Bottom nav</p><span class="text-xs text-slate-400">Home / ATS / Jobs</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5">
+              <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Mobile layout notes</h3><span class="text-xs text-slate-400">Responsive</span></div>
+              <div class="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Single-column flow</p><p class="mt-2 text-sm text-slate-300">Primary actions remain visible above the fold.</p></div>
+                <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Compressed stats</p><p class="mt-2 text-sm text-slate-300">Scorecards shrink into a compact pair layout.</p></div>
+                <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Thumb-ready nav</p><p class="mt-2 text-sm text-slate-300">Bottom navigation keeps core actions close to the thumb.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="tablet" class="preview-section">
+          <div class="mb-4"><p class="section-label">12 / Tablet Preview</p><h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">A wider breakpoint with more breathing room for panels and side-by-side content.</h2></div>
+          <div class="device-frame mx-auto max-w-[1180px] p-4 pt-8">
+            <div class="device-notch"></div>
+            <div class="rounded-[1.6rem] border border-white/10 bg-slate-950/75 p-4">
+              <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div>
+                  <p class="text-sm text-slate-400">Tablet preview</p>
+                  <h3 class="text-2xl font-semibold">Dashboard at medium resolution</h3>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-slate-400"><span class="rounded-full border border-white/10 bg-white/5 px-3 py-1">1366 x 1024</span><span class="rounded-full border border-white/10 bg-white/5 px-3 py-1">Landscape</span></div>
+              </div>
+              <div class="mt-4 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
+                  <p class="text-xs uppercase tracking-[0.24em] text-slate-400">Quick summary</p>
+                  <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">ATS</p><p class="mt-2 text-2xl font-semibold">86</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">Apps</p><p class="mt-2 text-2xl font-semibold">34</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">Interviews</p><p class="mt-2 text-2xl font-semibold">6</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="text-xs text-slate-400">Matches</p><p class="mt-2 text-2xl font-semibold">12</p></div>
+                  </div>
+                </div>
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Recent applications</h3><span class="text-xs text-slate-400">Scrollable</span></div>
+                  <div class="mt-4 grid gap-3 lg:grid-cols-2">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Finverse</p><p class="mt-1 text-xs text-slate-400">Frontend Intern - Interview</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">Orbit Analytics</p><p class="mt-1 text-xs text-slate-400">Product Analyst - Applied</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">BrightApps</p><p class="mt-1 text-xs text-slate-400">UI Intern - Selected</p></div>
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/55 p-4"><p class="font-medium">CloudSpring</p><p class="mt-1 text-xs text-slate-400">Platform Intern - Wishlist</p></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">ATS result snippet</h3><span class="text-xs text-slate-400">Tablet card layout</span></div>
+                  <div class="mt-4 rounded-2xl border border-white/10 bg-slate-950/55 p-4 text-sm leading-7 text-slate-300">React, TypeScript, Tailwind CSS, SQL, and product thinking are highlighted as strong matches. The remaining gaps are CI/CD, testing, and cloud deployment basics.</div>
+                </div>
+                <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div class="flex items-center justify-between"><h3 class="text-xl font-semibold">Responsive notes</h3><span class="text-xs text-slate-400">Tablet optimizations</span></div>
+                  <ul class="mt-4 space-y-3 text-sm text-slate-300">
+                    <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Two-column layouts remain readable without crowding.</li>
+                    <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">Charts and tables keep their structure with slightly reduced density.</li>
+                    <li class="rounded-2xl border border-white/10 bg-slate-950/55 p-4">The product still feels premium, not compressed.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast + Modal Overlay -->
+  <div id="toast-container" style="position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;"></div>
+  <div id="modal-overlay" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(2,6,23,0.78);backdrop-filter:blur(12px);align-items:center;justify-content:center;">
+    <div id="modal-box" style="background:linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.98));border:1px solid rgba(148,163,184,0.18);border-radius:1.75rem;max-width:480px;width:calc(100% - 32px);padding:2rem;box-shadow:0 32px 80px rgba(0,0,0,0.6);">
+      <div style="display:flex;align-items:start;justify-content:space-between;gap:1rem;">
+        <div><p id="modal-label" style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(125,211,252,0.8);"></p><h3 id="modal-title" style="margin-top:6px;font-size:1.4rem;font-weight:600;color:#f1f5f9;"></h3></div>
+        <button onclick="closeModal()" style="flex-shrink:0;width:36px;height:36px;border-radius:999px;border:1px solid rgba(148,163,184,0.16);background:rgba(255,255,255,0.05);color:#94a3b8;font-size:16px;cursor:pointer;">✕</button>
+      </div>
+      <p id="modal-body" style="margin-top:1rem;font-size:.875rem;line-height:1.75;color:#94a3b8;"></p>
+      <div id="modal-actions" style="margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap;"></div>
+    </div>
+  </div>
+
+  <script>
+  // ─── Toast ───────────────────────────────────────────────────────────────
+  function showToast(msg, type = 'success') {
+    const colors = {
+      success: { bg: 'rgba(16,185,129,0.15)', border: 'rgba(52,211,153,0.3)', dot: '#34d399', text: '#d1fae5' },
+      info:    { bg: 'rgba(56,189,248,0.12)', border: 'rgba(125,211,252,0.3)', dot: '#7dd3fc', text: '#e0f2fe' },
+      warn:    { bg: 'rgba(251,191,36,0.12)', border: 'rgba(251,191,36,0.3)',  dot: '#fbbf24', text: '#fef3c7' },
+      danger:  { bg: 'rgba(244,63,94,0.12)',  border: 'rgba(244,63,94,0.3)',   dot: '#f43f5e', text: '#ffe4e6' },
+    };
+    const c = colors[type] || colors.info;
+    const t = document.createElement('div');
+    t.style.cssText = `pointer-events:auto;display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;border:1px solid ${c.border};background:${c.bg};backdrop-filter:blur(16px);color:${c.text};font-size:13px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,0.4);opacity:0;transform:translateY(10px);transition:opacity 300ms,transform 300ms;max-width:340px;`;
+    t.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0;"></span>${msg}`;
+    document.getElementById('toast-container').appendChild(t);
+    requestAnimationFrame(() => { t.style.opacity='1'; t.style.transform='translateY(0)'; });
+    setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; setTimeout(() => t.remove(), 300); }, 3200);
+  }
+
+  // ─── Modal ───────────────────────────────────────────────────────────────
+  function showModal(label, title, body, actions = []) {
+    document.getElementById('modal-label').textContent = label;
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-body').textContent = body;
+    const act = document.getElementById('modal-actions');
+    act.innerHTML = '';
+    actions.forEach(a => {
+      const btn = document.createElement('button');
+      btn.textContent = a.label;
+      btn.style.cssText = a.primary
+        ? 'padding:10px 22px;border-radius:999px;background:#22d3ee;color:#0f172a;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity .2s;'
+        : 'padding:10px 22px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(148,163,184,0.18);color:#e2e8f0;font-size:13px;cursor:pointer;transition:opacity .2s;';
+      btn.onmouseenter = () => btn.style.opacity='.8';
+      btn.onmouseleave = () => btn.style.opacity='1';
+      btn.onclick = () => { closeModal(); a.action && a.action(); };
+      act.appendChild(btn);
+    });
+    const ov = document.getElementById('modal-overlay');
+    ov.style.display = 'flex';
+    setTimeout(() => ov.querySelector('#modal-box').style.transform = 'scale(1)', 10);
+  }
+  function closeModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+  }
+  document.getElementById('modal-overlay').addEventListener('click', e => { if(e.target.id==='modal-overlay') closeModal(); });
+
+  // ─── Loading simulation ──────────────────────────────────────────────────
+  function simulateLoading(btn, label, doneLabel, doneToast, toastType='success') {
+    const orig = btn.textContent;
+    btn.textContent = label;
+    btn.disabled = true;
+    btn.style.opacity = '.7';
+    setTimeout(() => {
+      btn.textContent = doneLabel || orig;
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      if (doneToast) showToast(doneToast, toastType);
+    }, 1400 + Math.random()*600);
+  }
+
+  // ─── Navigation ──────────────────────────────────────────────────────────
+  document.querySelectorAll('[data-jump]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const el = document.getElementById(btn.dataset.jump);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ─── Auth Tabs ────────────────────────────────────────────────────────────
+  function activateAuthTab(target) {
+    document.querySelectorAll('[data-tab-group="auth"] [data-tab-target]').forEach(b =>
+      b.setAttribute('aria-selected', String(b.dataset.tabTarget === target)));
+    document.querySelectorAll('.auth-panel').forEach(p =>
+      p.classList.toggle('hidden', p.dataset.tabPanel !== target));
+  }
+  document.querySelectorAll('[data-tab-group="auth"] [data-tab-target]').forEach(btn =>
+    btn.addEventListener('click', () => activateAuthTab(btn.dataset.tabTarget)));
+  activateAuthTab('sign-in');
+
+  // ─── Ring animations ──────────────────────────────────────────────────────
+  document.querySelectorAll('[stroke-dasharray]').forEach(ring => {
+    const offset = ring.getAttribute('stroke-dashoffset');
+    if (offset) ring.style.strokeDashoffset = offset;
+  });
+
+  // ─── Wire up ALL buttons by text content / context ───────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    // Small delay so tabs are initialized first
+    setTimeout(wireButtons, 100);
+  });
+  // Also run immediately for buttons already in DOM
+  wireButtons();
+
+  function wireButtons() {
+    document.querySelectorAll('button').forEach(btn => {
+      if (btn._wired) return;
+      btn._wired = true;
+      const txt = btn.textContent.trim();
+
+      // ── Landing hero buttons ──────────────────────────────────────────────
+      if (txt === 'Start free trial') {
+        btn.addEventListener('click', () => {
+          showModal('Getting Started', 'Start your free 14-day trial', 'Create your account to unlock ATS scanning, job matching, and interview prep. No credit card required.', [
+            { label: 'Create Account', primary: true, action: () => { activateAuthTab('sign-up'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); showToast('Redirected to sign up ✦', 'info'); }},
+            { label: 'Maybe later', primary: false }
+          ]);
+        });
+      }
+      if (txt === 'View ATS demo') {
+        btn.addEventListener('click', () => {
+          document.getElementById('ats').scrollIntoView({behavior:'smooth'});
+          showToast('Showing ATS analysis screen', 'info');
+        });
+      }
+      if (txt === 'Sign In' && btn.closest('nav')) {
+        btn.addEventListener('click', () => {
+          activateAuthTab('sign-in');
+          document.getElementById('auth').scrollIntoView({behavior:'smooth'});
+          showToast('Navigate to sign in', 'info');
+        });
+      }
+      if (txt === 'Get Started') {
+        btn.addEventListener('click', () => {
+          activateAuthTab('sign-up');
+          document.getElementById('auth').scrollIntoView({behavior:'smooth'});
+          showToast('Let\'s get you started!', 'success');
+        });
+      }
+      if (txt === 'Start free') {
+        btn.addEventListener('click', () => {
+          showModal('Free Plan', 'Start free — no card needed', 'You\'ll get 5 ATS scans/month, basic job matching, and interview prep essentials.', [
+            { label: 'Sign up free', primary: true, action: () => { activateAuthTab('sign-up'); document.getElementById('auth').scrollIntoView({behavior:'smooth'}); }},
+            { label: 'Compare plans', primary: false }
+          ]);
+        });
+      }
+      if (txt === 'Upgrade now') {
+        btn.addEventListener('click', () => {
+          showModal('Pro Plan — ₹499 / month', 'Unlock the full ResumeIQ experience', 'Unlimited ATS scans, AI resume rewriting, priority job match alerts, and mock interview sessions.', [
+            { label: 'Upgrade to Pro', primary: true, action: () => showToast('Redirecting to payment… ✦', 'success') },
+            { label: 'View all features', primary: false }
+          ]);
+        });
+      }
+      if (txt === 'Contact sales') {
+        btn.addEventListener('click', () => {
+          showModal('Enterprise Sales', 'Get a custom plan for your team', 'Ideal for placement cells, bootcamps, and universities. Volume pricing and dedicated support.', [
+            { label: 'Send inquiry', primary: true, action: () => showToast('Inquiry sent — we\'ll be in touch!', 'success') },
+            { label: 'Cancel', primary: false }
+          ]);
+        });
+      }
+
+      // ── Auth buttons ──────────────────────────────────────────────────────
+      if (txt === 'Sign In' && btn.closest('.auth-panel')) {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Authenticating…', 'Sign In', 'Signed in successfully! Welcome back.', 'success');
+        });
+      }
+      if (txt === 'Create Account') {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Creating account…', 'Create Account', 'Account created! Check your inbox for verification.', 'success');
+        });
+      }
+      if (txt === 'Verify Email') {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Verifying…', 'Verify Email', 'Email verified successfully ✓', 'success');
+        });
+      }
+      if (txt === 'Verify Phone') {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Verifying…', 'Verify Phone', 'Phone number verified ✓', 'success');
+        });
+      }
+      if (txt.includes('Continue with Google') || txt.includes('G Continue')) {
+        btn.addEventListener('click', () => {
+          // Show Google OAuth popup simulation
+          showModal('Google Sign-In', 'Connect your Google account', 'You\'ll be redirected to Google to authorize ResumeIQ AI. Your profile name and avatar will be auto-filled.', [
+            { label: '🔵  Sign in with Google', primary: true, action: () => {
+              const origHTML = btn.innerHTML;
+              btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #0f172a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span>Connecting…';
+              btn.disabled = true; btn.style.opacity = '.75';
+              setTimeout(() => {
+                btn.innerHTML = '<span style="font-size:14px;margin-right:6px;">✓</span>Google account connected';
+                btn.style.background = 'rgba(52,211,153,0.15)';
+                btn.style.borderColor = 'rgba(52,211,153,0.4)';
+                btn.style.color = '#6ee7b7';
+                btn.disabled = false; btn.style.opacity = '1';
+                showToast('Google OAuth connected — welcome! ✦', 'success');
+                setTimeout(() => activateAuthTab('profile-creation'), 900);
+              }, 1800);
+            }},
+            { label: 'Cancel', primary: false }
+          ]);
+        });
+      }
+      if (txt.includes('Continue with GitHub') || txt.includes('GH Continue')) {
+        btn.addEventListener('click', () => {
+          showModal('GitHub Sign-In', 'Connect your GitHub account', 'ResumeIQ AI will link your public repos and display your technical stack on your profile automatically.', [
+            { label: '⚫  Sign in with GitHub', primary: true, action: () => {
+              const origHTML = btn.innerHTML;
+              btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid #0f172a;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span>Connecting…';
+              btn.disabled = true; btn.style.opacity = '.75';
+              setTimeout(() => {
+                btn.innerHTML = '<span style="font-size:14px;margin-right:6px;">✓</span>GitHub account linked';
+                btn.style.background = 'rgba(52,211,153,0.15)';
+                btn.style.borderColor = 'rgba(52,211,153,0.4)';
+                btn.style.color = '#6ee7b7';
+                btn.disabled = false; btn.style.opacity = '1';
+                showToast('GitHub linked — repos imported ✦', 'success');
+                setTimeout(() => activateAuthTab('profile-creation'), 900);
+              }, 1800);
+            }},
+            { label: 'Cancel', primary: false }
+          ]);
+        });
+      }
+      if (txt === 'Send reset link') {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Sending link…', 'Send reset link', 'Reset link sent to your email ✓', 'info');
+        });
+      }
+      if (txt === 'Save Profile') {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Saving…', 'Save Profile', 'Profile saved successfully ✓', 'success');
+        });
+      }
+      if (txt === 'Forgot password?') {
+        btn.addEventListener('click', () => {
+          activateAuthTab('forgot-password');
+          showToast('Enter your email to reset password', 'info');
+        });
+      }
+
+      // ── Upload buttons ────────────────────────────────────────────────────
+      if (txt === 'Upload file') {
+        btn.addEventListener('click', () => {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.pdf,.doc,.docx,.txt';
+          input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+              simulateLoading(btn, 'Uploading…', 'Upload file', `"${file.name}" uploaded & parsed ✓`, 'success');
+            }
+          };
+          input.click();
+        });
+      }
+      if (txt === 'Use sample resume') {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Loading sample…', 'Use sample resume', 'Sample resume loaded — ATS scan ready', 'info');
+        });
+      }
+
+      // ── Job match buttons ──────────────────────────────────────────────────
+      if (txt === 'Apply now') {
+        btn.addEventListener('click', () => {
+          showModal('Quick Apply', 'Apply to Frontend Intern at Finverse', 'Your resume will be submitted along with your ResumeIQ profile. The match score is 94% — excellent fit.', [
+            { label: 'Confirm Apply', primary: true, action: () => showToast('Application submitted to Finverse ✦', 'success') },
+            { label: 'Cancel', primary: false }
+          ]);
+        });
+      }
+      if (txt === 'Save') {
+        btn.addEventListener('click', () => { showToast('Job saved to wishlist ✦', 'info'); });
+      }
+      if (txt === 'Compare') {
+        btn.addEventListener('click', () => {
+          showModal('Role Comparison', 'UX Engineer Intern vs your profile', 'Design tokens, accessibility, and handoff collaboration are strong matches. You may want to highlight your Figma and component library experience more prominently.', [
+            { label: 'Edit resume', primary: true, action: () => { document.getElementById('upload').scrollIntoView({behavior:'smooth'}); }},
+            { label: 'Save for later', primary: false, action: () => showToast('Saved for comparison', 'info') }
+          ]);
+        });
+      }
+      if (txt === 'Review') {
+        btn.addEventListener('click', () => {
+          showModal('Role Review', 'Platform Intern at CloudSpring', 'A growth opportunity role. Your current backend signal is weaker than required. Consider adding a backend project or cloud deployment experience to improve your match from 73% to 85%+.', [
+            { label: 'Add to tracker', primary: true, action: () => showToast('Added to internship tracker', 'success') },
+            { label: 'Dismiss', primary: false }
+          ]);
+        });
+      }
+
+      // ── Tracker status buttons ─────────────────────────────────────────────
+      if (btn.closest('#tracker') && (txt === 'Applied' || txt === 'Shortlisted' || txt === 'Rejected' || txt === 'Interview' || txt === 'Selected' || txt === 'Wishlist')) {
+        btn.addEventListener('click', () => {
+          showModal('Update Status', `Change application status`, `Select a new stage for this application. Changes are saved automatically to your tracker.`, [
+            { label: 'Applied', primary: false, action: () => showToast('Status → Applied', 'info') },
+            { label: 'Interview', primary: false, action: () => showToast('Status → Interview 🎯', 'success') },
+            { label: 'Selected', primary: true, action: () => showToast('Congrats! Status → Selected 🎉', 'success') },
+          ]);
+        });
+      }
+
+      // ── Settings buttons ───────────────────────────────────────────────────
+      if (txt === 'Delete account') {
+        btn.addEventListener('click', () => {
+          showModal('Danger Zone', 'Permanently delete your account?', 'This will erase all your resumes, applications, and interview prep history. This action cannot be undone.', [
+            { label: 'Yes, delete everything', primary: false, action: () => showToast('Account deletion requested. Check your email to confirm.', 'warn') },
+            { label: 'Cancel — keep my account', primary: true }
+          ]);
+        });
+      }
+
+      // ── Profile save ──────────────────────────────────────────────────────
+      if (btn.closest('#profile') && txt.includes('Save')) {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Saving…', btn.textContent, 'Profile updated successfully ✓', 'success');
+        });
+      }
+
+      // ── Generic toggle/settings buttons inside settings section ───────────
+      if (btn.closest('#settings') && (txt === 'Save changes' || txt === 'Update' || txt === 'Apply')) {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Saving…', btn.textContent, 'Settings saved ✓', 'success');
+        });
+      }
+
+      // ── Interview prep buttons ─────────────────────────────────────────────
+      if (btn.closest('#interview')) {
+        btn.addEventListener('click', () => {
+          const labels = ['Starting session…', 'Loading questions…', 'Preparing AI scorer…'];
+          const toasts = ['Mock interview session started 🎯', 'Next question loaded', 'AI feedback ready'];
+          const idx = Math.floor(Math.random() * labels.length);
+          simulateLoading(btn, labels[idx], btn.textContent, toasts[idx], 'success');
+        });
+      }
+
+      // ── ATS re-scan / action buttons ──────────────────────────────────────
+      if (btn.closest('#ats') && (txt.includes('Re-scan') || txt.includes('scan') || txt.includes('Scan'))) {
+        btn.addEventListener('click', () => {
+          simulateLoading(btn, 'Scanning…', btn.textContent, 'ATS scan complete — score updated ✓', 'success');
+        });
+      }
+    });
+  }
+  </script>
+  <!-- ══════════════════════════════════════════════════════
+       AI RESUME PARSER — Real extraction via Anthropic API
+  ══════════════════════════════════════════════════════ -->
+  <script>
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function resetUpload() {
+    document.getElementById('upload-results').classList.add('hidden');
+    document.getElementById('upload-error').classList.add('hidden');
+    document.getElementById('dropzone-loading').classList.add('hidden');
+    document.getElementById('dropzone-idle').classList.remove('hidden');
+    document.getElementById('resume-file-input').value = '';
+    setProgress(1, 0); setProgress(2, 0); setProgress(3, 0);
+  }
+
+  function setProgress(n, pct) {
+    document.getElementById(`prog-bar-${n}`).style.width = pct + '%';
+    document.getElementById(`prog-val-${n}`).textContent = pct + '%';
+  }
+
+  function showError(msg) {
+    document.getElementById('upload-error-msg').textContent = msg;
+    document.getElementById('upload-error').classList.remove('hidden');
+    document.getElementById('dropzone-loading').classList.add('hidden');
+    document.getElementById('dropzone-idle').classList.remove('hidden');
+  }
+
+  function setLoadingStage(msg) {
+    document.getElementById('loading-stage').textContent = msg;
+  }
+
+  // ── File reader — supports PDF (base64), DOCX (text via mammoth-like approach), TXT ──
+  async function readFileForAPI(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+
+    if (ext === 'pdf') {
+      // Send as base64 document to Claude
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve({ type: 'pdf', data: e.target.result.split(',')[1] });
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (ext === 'docx' || ext === 'doc') {
+      // Use mammoth.js CDN to extract text from DOCX
+      try {
+        const mammoth = await loadMammoth();
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer });
+        return { type: 'text', data: result.value };
+      } catch (e) {
+        // Fallback: read as text
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve({ type: 'text', data: e.target.result });
+          reader.onerror = reject;
+          reader.readAsText(file);
+        });
+      }
+    }
+
+    // TXT, RTF — read as plain text
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve({ type: 'text', data: e.target.result });
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+  }
+
+  // ── Lazy-load mammoth.js for DOCX ─────────────────────────────────────────
+  let _mammothPromise = null;
+  function loadMammoth() {
+    if (_mammothPromise) return _mammothPromise;
+    _mammothPromise = new Promise((resolve, reject) => {
+      if (window.mammoth) { resolve(window.mammoth); return; }
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+      s.onload = () => resolve(window.mammoth);
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+    return _mammothPromise;
+  }
+
+  // ── Main extraction via Anthropic API ─────────────────────────────────────
+  async function extractResume(file) {
+    // Show loading UI
+    document.getElementById('dropzone-idle').classList.add('hidden');
+    document.getElementById('dropzone-loading').classList.remove('hidden');
+    setLoadingStage('Reading your file…');
+
+    let filePayload;
+    try {
+      filePayload = await readFileForAPI(file);
+    } catch (e) {
+      showError('Could not read the file. Try a PDF or TXT format.');
+      return;
+    }
+
+    setProgress(1, 100);
+    setLoadingStage('AI is extracting your details…');
+    setProgress(2, 30);
+
+    // Build the message content
+    let messageContent;
+    const PROMPT = `You are a professional resume parser. Extract ALL details from the resume and return ONLY valid JSON — no markdown, no explanation, just the raw JSON object.
+
+Return this exact structure:
+{
+  "name": "Full name",
+  "email": "email address",
+  "phone": "phone number",
+  "location": "city, country or address",
+  "github": "GitHub profile URL if present, else empty string",
+  "links": "LinkedIn / portfolio URLs joined by  |  (exclude GitHub, use empty string if none)",
+  "summary": "Professional summary or objective, 2-3 sentences",
+  "skills": ["skill1", "skill2", ...],
+  "education": [
+    { "degree": "Degree name", "institution": "College/University", "year": "Graduation year or date range", "gpa": "GPA if mentioned" }
+  ],
+  "experience": [
+    { "title": "Job title", "company": "Company name", "duration": "Date range", "bullets": ["achievement 1", "achievement 2"] }
+  ],
+  "projects": [
+    { "name": "Project name", "tech": "Tech stack used", "description": "What it does" }
+  ],
+  "ats_score": 78,
+  "ats_label": "ATS Ready",
+  "ats_desc": "One line describing the ATS readiness",
+  "missing_keywords": ["keyword1", "keyword2"]
+}
+
+Rules:
+- If a field is not found, use "" for strings, [] for arrays
+- ats_score should be an integer 0-100 based on: formatting clarity, keyword density, quantified achievements, section completeness
+- Be thorough — extract everything visible in the resume
+- Return ONLY the JSON, starting with { and ending with }`;
+
+    if (filePayload.type === 'pdf') {
+      messageContent = [
+        {
+          type: 'document',
+          source: { type: 'base64', media_type: 'application/pdf', data: filePayload.data }
+        },
+        { type: 'text', text: PROMPT }
+      ];
+    } else {
+      messageContent = [
+        { type: 'text', text: `Here is the resume text:\n\n---\n${filePayload.data}\n---\n\n${PROMPT}` }
+      ];
+    }
+
+    setProgress(2, 70);
+
+    let parsed;
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [{ role: 'user', content: messageContent }]
+        })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.error?.message || `API error ${resp.status}`);
+      }
+
+      const data = await resp.json();
+      const rawText = data.content.map(c => c.text || '').join('');
+      setProgress(2, 100);
+      setProgress(3, 50);
+      setLoadingStage('Rendering preview…');
+
+      // Strip markdown fences if present
+      const cleaned = rawText.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+      parsed = JSON.parse(cleaned);
+    } catch (e) {
+      showError('AI extraction failed: ' + e.message);
+      return;
+    }
+
+    setProgress(3, 100);
+    setLoadingStage('Done!');
+
+    // ── Populate UI ──────────────────────────────────────────────────────
+    setTimeout(() => {
+      document.getElementById('dropzone-loading').classList.add('hidden');
+      document.getElementById('upload-results').classList.remove('hidden');
+
+      // File meta
+      document.getElementById('result-filename').textContent = file.name;
+      document.getElementById('result-filemeta').textContent =
+        `${(file.size / 1024).toFixed(1)} KB • Parsed ${new Date().toLocaleTimeString()}`;
+
+      // Identity
+      document.getElementById('res-name').textContent     = parsed.name     || 'Not found';
+      document.getElementById('res-email').textContent    = parsed.email    || 'Not found';
+      document.getElementById('res-phone').textContent    = parsed.phone    || 'Not found';
+      document.getElementById('res-location').textContent = parsed.location || 'Not found';
+      document.getElementById('res-github').textContent   = parsed.github   || 'Not found';
+      document.getElementById('res-links').textContent    = parsed.links    || 'Not found';
+
+      // Skills
+      const skillsEl = document.getElementById('res-skills');
+      skillsEl.innerHTML = '';
+      (parsed.skills || []).forEach(s => {
+        const span = document.createElement('span');
+        span.className = 'mini-chip rounded-full px-3 py-1.5 text-cyan-200';
+        span.textContent = s;
+        skillsEl.appendChild(span);
+      });
+      if (!parsed.skills?.length) skillsEl.innerHTML = '<span class="text-slate-500">None detected</span>';
+
+
+
+      // Experience
+      const expEl = document.getElementById('res-experience');
+      expEl.innerHTML = '';
+      (parsed.experience || []).forEach(e => {
+        const d = document.createElement('div');
+        d.className = 'rounded-2xl border border-white/10 bg-slate-950/55 p-4';
+        const bullets = (e.bullets || []).map(b => `<li class="mt-1 text-slate-300">${b}</li>`).join('');
+        d.innerHTML = `<div class="flex justify-between gap-2 flex-wrap"><p class="font-semibold text-white">${e.title || ''}</p><span class="text-xs text-slate-400">${e.duration || ''}</span></div>
+          <p class="text-cyan-300/80 mt-0.5">${e.company || ''}</p>
+          ${bullets ? '<ul class="list-disc list-inside mt-2 space-y-0.5 text-xs">' + bullets + '</ul>' : ''}`;
+        expEl.appendChild(d);
+      });
+      if (!parsed.experience?.length) expEl.innerHTML = '<p class="text-slate-500">None detected</p>';
+
+      // Projects
+      const projEl = document.getElementById('res-projects');
+      projEl.innerHTML = '';
+      (parsed.projects || []).forEach(p => {
+        const d = document.createElement('div');
+        d.className = 'rounded-2xl border border-white/10 bg-slate-950/55 p-4';
+        d.innerHTML = `<p class="font-semibold text-white">${p.name || ''}</p>
+          ${p.tech ? `<p class="text-xs text-violet-300 mt-0.5">${p.tech}</p>` : ''}
+          ${p.description ? `<p class="text-slate-400 mt-1">${p.description}</p>` : ''}`;
+        projEl.appendChild(d);
+      });
+      if (!parsed.projects?.length) projEl.innerHTML = '<p class="text-slate-500">None detected</p>';
+
+      // Summary
+      document.getElementById('res-summary').textContent = parsed.summary || 'No summary found in resume.';
+
+      // ATS score ring
+      const score = parseInt(parsed.ats_score) || 0;
+      const circumference = 239;
+      const offset = circumference - (score / 100) * circumference;
+      const ring = document.getElementById('ats-ring-upload');
+      ring.style.strokeDashoffset = offset;
+      document.getElementById('ats-score-text').textContent = score;
+      document.getElementById('ats-score-label').textContent =
+        parsed.ats_label || (score >= 80 ? 'ATS Ready' : score >= 60 ? 'Needs Work' : 'Low Score');
+      document.getElementById('ats-score-desc').textContent =
+        parsed.ats_desc || 'Based on formatting, keywords and structure';
+
+
+
+      showToast(`Resume parsed — ${parsed.name || 'profile'} extracted ✦`, 'success');
+
+      // Scroll into view
+      document.getElementById('upload-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
+  }
+
+  // ── Wire up file input & drag-drop ────────────────────────────────────────
+  document.getElementById('resume-file-input').addEventListener('change', function () {
+    if (this.files[0]) extractResume(this.files[0]);
+  });
+
+  const dz = document.getElementById('upload-dropzone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = 'rgba(34,211,238,0.8)'; });
+  dz.addEventListener('dragleave', () => { dz.style.borderColor = ''; });
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.style.borderColor = '';
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      document.getElementById('resume-file-input').files = e.dataTransfer.files;
+      extractResume(file);
+    }
+  });
+  </script>
+</body>
+</html>
